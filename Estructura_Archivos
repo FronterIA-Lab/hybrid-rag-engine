@@ -1,0 +1,34 @@
+hybrid-rag-engine/
+├── README.md                    ← El más importante. Ver template abajo.
+├── pyproject.toml               ← Dependencias con versiones fijas
+├── Makefile                     ← make ingest / make eval / make serve
+├── docker-compose.yml           ← Backend + Qdrant + Streamlit, todo junto
+├── .github/
+│   └── workflows/ci.yml         ← pytest básico (señal de seriedad)
+├── src/
+│   ├── __init__.py
+│   ├── ingestion/
+│   │   ├── chunker.py           ← Chunking semántico + sliding window
+│   │   ├── loader.py            ← PDF, DOCX, TXT unificado
+│   │   └── embedder.py          ← text-embedding-3-small o BGE-M3
+│   ├── retrieval/
+│   │   ├── hybrid.py            ← BM25 + Vector → RRF fusion
+│   │   ├── reranker.py          ← CrossEncoder ms-marco-MiniLM
+│   │   └── pipeline.py          ← Orquestador principal
+│   ├── generation/
+│   │   └── chain.py             ← LangChain LCEL con citaciones
+│   ├── evaluation/
+│   │   └── ragas_eval.py        ← faithfulness, context_precision, answer_relevancy
+│   └── api/
+│       └── main.py              ← FastAPI: /ingest, /query, /health
+├── app/
+│   └── streamlit_app.py         ← UI: upload → chat → citas con página
+├── notebooks/
+│   └── 01_benchmark.ipynb       ← Comparativa BM25 vs Vector vs Hybrid
+├── tests/
+│   ├── test_chunker.py
+│   └── test_retrieval.py
+├── data/
+│   └── sample/                  ← 2-3 PDFs de demo (incluir en el repo)
+└── docs/
+    └── architecture.png         ← Diagrama embed en README
